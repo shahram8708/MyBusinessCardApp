@@ -1,0 +1,12 @@
+Flask
+Flask-SQLAlchemy
+Flask-Login
+Flask-WTF
+Flask-Mail
+Flask-Bcrypt
+Flask-Migrate
+Werkzeug
+SQLAlchemy
+qrcode
+WTForms
+gunicorn

@@ -1,0 +1,154 @@
+{% extends "base.html" %}
+
+{% block title %}Create Your V Card{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg border-0 p-4 rounded-4"
+                style="background: linear-gradient(to bottom, #007bff, #0056b3);">
+                <h2 class="text-center mb-4 text-white" style="font-family: 'Roboto', sans-serif;">Create Your V Card
+                </h2>
+
+                <form method="POST" enctype="multipart/form-data">
+                    {{ form.csrf_token }}
+
+                    <div class="mb-3">
+                        {{ form.full_name.label(class="form-label text-white") }}
+                        {{ form.full_name(class="form-control form-control-lg", placeholder="Enter your full name",
+                        style="border-radius: 25px;") }}
+                    </div>
+
+
+                    <div class="mb-3">
+                        {{ form.banner_image.label(class="form-label text-white") }}
+                        {{ form.banner_image(class="form-control form-control-lg", style="border-radius: 25px;") }}
+                    </div>
+
+
+                    <div class="mb-3">
+                        {{ form.company.label(class="form-label text-white") }}
+                        {{ form.company(class="form-control form-control-lg", placeholder="Enter your company name",
+                        style="border-radius: 25px;") }}
+                    </div>
+
+
+                    <div class="mb-3">
+                        {{ form.designation.label(class="form-label text-white") }}
+                        {{ form.designation(class="form-control form-control-lg", placeholder="Your designation",
+                        style="border-radius: 25px;") }}
+                    </div>
+
+
+                    <div class="mb-3">
+                        {{ form.phone.label(class="form-label text-white") }}
+                        {{ form.phone(class="form-control form-control-lg", placeholder="Your contact number",
+                        style="border-radius: 25px;") }}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form.email.label(class="form-label text-white") }}
+                        {{ form.email(class="form-control form-control-lg", placeholder="Your business email",
+                        style="border-radius: 25px;") }}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form.website.label(class="form-label text-white") }}
+                        {{ form.website(class="form-control form-control-lg", placeholder="Your website (optional)",
+                        style="border-radius: 25px;") }}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form.address.label(class="form-label text-white") }}
+                        {{ form.address(class="form-control form-control-lg", placeholder="Your office address",
+                        style="border-radius: 25px;") }}
+                    </div>
+
+
+                    <div class="social-media mb-4">
+                        <h4 class="text-white">Social Media</h4>
+                        <div class="row">
+                            <div class="col-3">
+                                {{ form.linkedin(class="form-control form-control-lg", placeholder="LinkedIn",
+                                style="border-radius: 25px;") }}
+                            </div>
+                            <div class="col-3">
+                                {{ form.twitter(class="form-control form-control-lg", placeholder="Twitter",
+                                style="border-radius: 25px;") }}
+                            </div>
+                            <div class="col-3">
+                                {{ form.instagram(class="form-control form-control-lg", placeholder="Instagram",
+                                style="border-radius: 25px;") }}
+                            </div>
+                            <div class="col-3">
+                                {{ form.facebook(class="form-control form-control-lg", placeholder="Facebook",
+                                style="border-radius: 25px;") }}
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="mb-3">
+                        {{ form.description.label(class="form-label text-white") }}
+                        {{ form.description(class="form-control form-control-lg", placeholder="Describe yourself or your
+                        business", style="border-radius: 25px;") }}
+                    </div>
+
+
+                    <div class="mb-3">
+                        {{ form.profile_photo.label(class="form-label text-white") }}
+                        {{ form.profile_photo(class="form-control form-control-lg", style="border-radius: 25px;") }}
+                    </div>
+
+
+                    <div class="mb-3">
+                        <h4 class="text-white">Gallery Images</h4>
+                        {{ form.gallery_images(class="form-control form-control-lg", style="border-radius: 25px;") }}
+                    </div>
+
+
+                    <h4 class="text-white">Services</h4>
+                    <div class="service-entry mb-3">
+                        {{ form.service_titles[0].label(class="form-label text-white") }}
+                        {{ form.service_titles[0](class="form-control form-control-lg", placeholder="Service title",
+                        style="border-radius: 25px;") }}
+
+                        {{ form.service_descriptions[0].label(class="form-label text-white") }}
+                        {{ form.service_descriptions[0](class="form-control form-control-lg", placeholder="Service
+                        description", style="border-radius: 25px;") }}
+
+                        {{ form.service_images[0].label(class="form-label text-white") }}
+                        {{ form.service_images[0](class="form-control form-control-lg", style="border-radius: 25px;") }}
+                    </div>
+
+
+                    <div class="mb-3">
+                        {{ form.about.label(class="form-label text-white") }}
+                        {{ form.about(class="form-control form-control-lg", placeholder="Describe your business
+                        (optional)", style="border-radius: 25px;") }}
+                    </div>
+
+
+                    <h4 class="text-white">Business Hours</h4>
+                    <div class="row">
+                        {% for day in ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] %}
+                        <div class="col-6 mb-3">
+                            {{ form[day].label(class="form-label text-white") }}
+                            {{ form[day](class="form-control form-control-lg", placeholder="e.g., 9 AM - 5 PM",
+                            style="border-radius: 25px;") }}
+                        </div>
+                        {% endfor %}
+                    </div>
+
+
+                    <div class="text-center mt-4">
+                        {{ form.submit(class="btn btn-lg btn-success w-50", style="border-radius: 50px;
+                        background-color: #28a745; border: none;") }}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

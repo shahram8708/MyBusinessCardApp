@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ vcard.company if vcard.company else "Default Title" }}</title>
+</head>
+
+<body>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+
+    <div class="container-fluid py-5">
+        <div class="justify-content-center">
+            <div class="mb-4">
+                <div class="container mt-5 card card-hover shadow-lg border-0 rounded-3 animate__animated animate__fadeInLeft"
+                    style="padding-bottom: 10px;">
+                    {% if vcard.profile_photo %}
+                    <div class="profile-float text-center mt-4">
+                        <img src="{{ vcard.profile_photo }}" alt="Profile Photo" class="rounded-circle shadow"
+                            style="width: 150px; height: 150px; object-fit: cover; border: 3px solid white;">
+                    </div>
+                    {% endif %}
+
+                    <div class="card-body text-center">
+
+                        <h1 class="display-4 fw-bold mb-3 text-dark">{{ vcard.full_name }}</h1>
+
+
+                        <div class="d-flex justify-content-center align-items-center mb-4">
+                            {% if vcard.designation %}
+                            <span class="badge rounded-pill text-dark bg-gradient p-2 me-3 shadow-sm"
+                                style="font-size: 1.1rem;">
+                                {{ vcard.designation }}
+                            </span>
+                            {% endif %}
+                            {% if vcard.company %}
+                            <span class="badge rounded-pill text-white bg-dark p-2 shadow-sm"
+                                style="font-size: 1.1rem;">
+                                {{ vcard.company }}
+                            </span>
+                            {% endif %}
+                        </div>
+
+
+                        {% if current_user.is_authenticated and vcard.owner == current_user %}
+                        <a href="{{ url_for('edit_vcard', vcard_id=vcard.id) }}"
+                            class="btn btn-primary btn-lg px-4 py-2 mt-4 d-flex align-items-center justify-content-center shadow-lg transition-transform"
+                            style="font-size: 1.1rem; text-transform: uppercase; border-radius: 50px;">
+                            <i class="bi bi-pencil-square me-2"></i> Edit Your VCard
+                        </a>
+                        {% endif %}
+                    </div>
+
+
+                    <style>
+                        .transition-transform:hover {
+                            transform: translateY(-5px);
+                            transition: transform 0.3s ease;
+                        }
+                    </style>
+
+
+                    <div class="list-group list-group-flush">
+                        {% if vcard.email %}
+                        <div class="list-group-item d-flex align-items-center">
+                            <i class="bi bi-envelope-fill text-primary me-2"></i>
+                            <a href="mailto:{{ vcard.email }}" class="text-decoration-none">{{ vcard.email }}</a>
+                        </div>
+                        {% endif %}
+
+                        {% if vcard.phone %}
+                        <div class="list-group-item d-flex align-items-center">
+                            <i class="bi bi-whatsapp text-success me-2"></i>
+                            <a href="tel:{{ vcard.phone }}" class="text-decoration-none">{{ vcard.phone }}</a>
+                        </div>
+                        {% endif %}
+
+                        {% if vcard.address %}
+                        <div class="list-group-item d-flex align-items-center">
+                            <i class="bi bi-geo-alt-fill text-danger me-2"></i>
+                            {{ vcard.address }}
+                        </div>
+                        {% endif %}
+                    </div>
+
+
+                    <div class="mt-4 d-flex justify-content-center gap-3">
+
+                        {% if vcard.website %}
+                        <a href="{{ vcard.website }}" target="_blank" class="social-icon text-info"><i
+                                class="bi bi-globe"></i></a>
+                        {% endif %}
+
+                        {% if vcard.linkedin %}
+                        <a href="{{ vcard.linkedin }}" target="_blank" class="social-icon text-linkedin">
+                            <i class="bi bi-linkedin"></i>
+                        </a>
+                        {% endif %}
+
+                        {% if vcard.twitter %}
+                        <a href="{{ vcard.twitter }}" target="_blank" class="social-icon text-info">
+                            <i class="bi bi-twitter-x"></i>
+                        </a>
+                        {% endif %}
+
+                        {% if vcard.instagram %}
+                        <a href="{{ vcard.instagram }}" target="_blank" class="social-icon text-instagram">
+                            <i class="bi bi-instagram"></i>
+                        </a>
+                        {% endif %}
+
+                        {% if vcard.facebook %}
+                        <a href="{{ vcard.facebook }}" target="_blank" class="social-icon text-facebook">
+                            <i class="bi bi-facebook"></i>
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="">
+
+            {% if vcard.banner_image %}
+            <div
+                class="container mt-5 card mb-4 overflow-hidden border-0 shadow-lg animate__animated animate__fadeInRight">
+                <img src="{{ vcard.banner_image }}" alt="Banner" class="img-fluid rounded-3"
+                    style="height: 200px; object-fit: cover;">
+            </div>
+            {% endif %}
+
+
+            {% if vcard.about %}
+            <div class="container mt-5 card card-hover mb-4 border-0 shadow-lg animate__animated animate__fadeInUp">
+                <div class="card-body">
+                    <h3 class="h4 fw-bold section-title">📝 About Me</h3>
+                    <p class="lead">{{ vcard.about }}</p>
+                </div>
+            </div>
+            {% endif %}
+            {% if vcard.monday or vcard.tuesday or vcard.wednesday or vcard.thursday or vcard.friday or vcard.saturday
+            or vcard.sunday %}
+            <div class="mt-4 container mt-5">
+                <h4 class="fw-bold text-center mb-4">📅 Business Hours</h4>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card shadow-lg border-0 card-hover mb-3 animate__animated animate__fadeInUp">
+                            <div class="card-body p-4">
+                                {% if vcard.monday %}
+                                <div class="d-flex align-items-center mb-3">
+                                    <i class="bi bi-calendar-day text-primary me-3" style="font-size: 1.5rem;"></i>
+                                    <div class="w-100">
+                                        <h5 class="fw-bold">Monday</h5>
+                                        <p class="text-muted">{{ vcard.monday }}</p>
+                                    </div>
+                                </div>
+                                {% endif %}
+
+                                {% if vcard.tuesday %}
+                                <div class="d-flex align-items-center mb-3">
+                                    <i class="bi bi-calendar-day text-primary me-3" style="font-size: 1.5rem;"></i>
+                                    <div class="w-100">
+                                        <h5 class="fw-bold">Tuesday</h5>
+                                        <p class="text-muted">{{ vcard.tuesday }}</p>
+                                    </div>
+                                </div>
+                                {% endif %}
+
+                                {% if vcard.wednesday %}
+                                <div class="d-flex align-items-center mb-3">
+                                    <i class="bi bi-calendar-day text-primary me-3" style="font-size: 1.5rem;"></i>
+                                    <div class="w-100">
+                                        <h5 class="fw-bold">Wednesday</h5>
+                                        <p class="text-muted">{{ vcard.wednesday }}</p>
+                                    </div>
+                                </div>
+                                {% endif %}
+
+                                {% if vcard.thursday %}
+                                <div class="d-flex align-items-center mb-3">
+                                    <i class="bi bi-calendar-day text-primary me-3" style="font-size: 1.5rem;"></i>
+                                    <div class="w-100">
+                                        <h5 class="fw-bold">Thursday</h5>
+                                        <p class="text-muted">{{ vcard.thursday }}</p>
+                                    </div>
+                                </div>
+                                {% endif %}
+
+                                {% if vcard.friday %}
+                                <div class="d-flex align-items-center mb-3">
+                                    <i class="bi bi-calendar-day text-primary me-3" style="font-size: 1.5rem;"></i>
+                                    <div class="w-100">
+                                        <h5 class="fw-bold">Friday</h5>
+                                        <p class="text-muted">{{ vcard.friday }}</p>
+                                    </div>
+                                </div>
+                                {% endif %}
+
+                                {% if vcard.saturday %}
+                                <div class="d-flex align-items-center mb-3">
+                                    <i class="bi bi-calendar-day text-primary me-3" style="font-size: 1.5rem;"></i>
+                                    <div class="w-100">
+                                        <h5 class="fw-bold">Saturday</h5>
+                                        <p class="text-muted">{{ vcard.saturday }}</p>
+                                    </div>
+                                </div>
+                                {% endif %}
+
+                                {% if vcard.sunday %}
+                                <div class="d-flex align-items-center mb-3">
+                                    <i class="bi bi-calendar-day text-primary me-3" style="font-size: 1.5rem;"></i>
+                                    <div class="w-100">
+                                        <h5 class="fw-bold">Sunday</h5>
+                                        <p class="text-muted">{{ vcard.sunday }}</p>
+                                    </div>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-6">
+                        <div class="card shadow-lg border-0 card-hover mb-3 animate__animated animate__fadeInUp">
+                            <div class="card-body p-4">
+                                <div class="text-center mb-4">
+                                    <h5 class="fw-bold text-success">🌟 Ready to Serve You! 🌟</h5>
+                                    <p class="text-muted">We are here to help. If you have any questions, feel free to
+                                        contact us during the hours mentioned above.</p>
+                                </div>
+
+                                <div class="d-flex justify-content-center gap-3">
+                                    <a href="tel:{{ vcard.phone }}" class="btn btn-success text-white">
+                                        <i class="bi bi-telephone-fill me-2"></i> Call Us
+                                    </a>
+                                    <a href="mailto:{{ vcard.email }}" class="btn btn-primary text-white">
+                                        <i class="bi bi-envelope-fill me-2"></i> Email Us
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+            <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+
+
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+
+
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    const elements = document.querySelectorAll('.animate__animated');
+
+                    const observer = new IntersectionObserver((entries) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting) {
+                                entry.target.style.visibility = 'visible';
+                                entry.target.classList.add(entry.target.dataset.animation);
+                            }
+                        });
+                    }, { threshold: 0.1 });
+
+                    elements.forEach(element => {
+                        element.style.visibility = 'hidden';
+                        observer.observe(element);
+                    });
+                });
+            </script>
+
+            {% endif %}
+            {% if qr_code_base64 %}
+            <div class="container mt-5 mt-5 text-center">
+
+                <h4 class="fw-bold text-dark mb-4 animate__animated animate__fadeInUp">
+                    📲 Scan Our QR Code
+                </h4>
+
+
+                <div class="card shadow-lg border-0 rounded-3 animate__animated animate__fadeInUp">
+                    <div class="card-body p-5">
+
+                        <div class="mb-4">
+                            <img src="data:image/png;base64,{{ qr_code_base64 }}" alt="QR Code"
+                                class="img-fluid rounded shadow-lg" style="max-width: 250px;">
+                        </div>
+
+
+                        <div class="d-flex justify-content-center align-items-center gap-3">
+                            <div class="text-center">
+                                <h5 class="fw-bold text-primary">Scan the QR code to access more details!</h5>
+                                <p class="text-muted">
+                                    Access your profile, business info, and much more with a single scan.
+                                </p>
+                            </div>
+                        </div>
+
+                        {% if vcard.website %}
+                        <div class="mt-4">
+                            <a href="{{ vcard.website }}"
+                                class="btn btn-lg btn-success animate__animated animate__pulse animate__infinite text-white">
+                                <i class="bi bi-arrow-right-circle-fill me-2"></i> Visit Us Now
+                            </a>
+                        </div>
+                        {% endif %}
+
+
+                        <div class="mt-5">
+                            <h6 class="text-muted">Need Assistance? Contact Us:</h6>
+                            <div class="d-flex justify-content-center gap-4">
+
+                                <a href="tel:{{ vcard.phone }}" class="btn btn-outline-primary p-3">
+                                    <i class="bi bi-telephone-fill" style="font-size: 1.5rem;"></i>
+                                </a>
+
+
+                                <a href="mailto:{{ vcard.email }}" class="btn btn-outline-danger p-3">
+                                    <i class="bi bi-envelope-fill" style="font-size: 1.5rem;"></i>
+                                </a>
+
+
+                                <a href="https://wa.me/{{ vcard.phone }}" class="btn btn-outline-success p-3">
+                                    <i class="bi bi-whatsapp" style="font-size: 1.5rem;"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            {% if vcard.gallery_images %}
+            <div class="container mt-5 mt-5 text-center">
+
+                <h4 class="fw-bold text-dark mb-4 animate__animated animate__fadeInUp">
+                    🖼️ Our Stunning Gallery
+                </h4>
+
+
+                <div class="row g-4 justify-content-center">
+                    {% for image in vcard.gallery_images.split(',') %}
+                    {% if image %}
+                    <div class="col-12 col-md-6 col-lg-4">
+
+                        <div class="card border-0 shadow rounded-3 overflow-hidden">
+                            <div class="card-body p-0">
+
+                                <img src="{{ image }}" alt="Gallery Image"
+                                    class="img-fluid rounded-3 shadow-sm w-100 animate__animated animate__fadeInUp"
+                                    style="transition: transform 0.3s ease-in-out;">
+                            </div>
+
+                            <div class="card-footer bg-transparent border-0 text-center py-2">
+                                <a href="{{ image }}" class="btn btn-outline-dark btn-sm">
+                                    <i class="bi bi-search"></i> View Full Image
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+
+            {% endif %}
+            {% if vcard.testimonials %}
+            <div class="container mt-5">
+
+                <h4 class="fw-bold text-center text-dark mb-4 animate__animated animate__fadeInUp">
+                    💬 Client Testimonials
+                </h4>
+
+
+                <div class="row justify-content-center">
+                    {% for testimonial in vcard.testimonials|from_json %}
+                    <div class="col-12 col-md-6 col-lg-4 mb-4">
+
+                        <div class="card shadow-lg border-light rounded-3 p-4 animate__animated animate__fadeInUp">
+                            <div class="d-flex align-items-center mb-3">
+
+                                <div class="avatar">
+                                    <i class="bi bi-person-circle text-primary" style="font-size: 40px;"></i>
+                                </div>
+
+                                <div class="ms-3">
+                                    <h6 class="fw-bold mb-0">{{ testimonial.name }}</h6>
+                                    <p class="text-muted mb-0">{{ testimonial.designation }}</p>
+                                </div>
+                            </div>
+
+                            <p class="text-muted">{{ testimonial.comment | truncate(100, true, '...') }}</p>
+
+
+                            <div class="d-flex justify-content-start mb-3">
+                                <i class="bi bi-star-fill text-warning"></i>
+                                <i class="bi bi-star-fill text-warning"></i>
+                                <i class="bi bi-star-fill text-warning"></i>
+                                <i class="bi bi-star-fill text-warning"></i>
+                                <i class="bi bi-star-half text-warning"></i>
+                            </div>
+
+
+                            <div class="text-center">
+
+                                <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal"
+                                    data-bs-target="#testimonialModal{{ loop.index }}">
+                                    <i class="bi bi-envelope"></i> View More
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="modal fade" id="testimonialModal{{ loop.index }}" tabindex="-1"
+                        aria-labelledby="testimonialModalLabel{{ loop.index }}" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="testimonialModalLabel{{ loop.index }}">{{
+                                        testimonial.name }}'s Testimonial</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body text-center">
+
+                                    <div class="d-flex justify-content-center mb-3">
+
+                                        <div class="avatar">
+                                            <i class="bi bi-person-circle text-primary" style="font-size: 60px;"></i>
+                                        </div>
+                                    </div>
+                                    <h6 class="fw-bold">{{ testimonial.name }}</h6>
+                                    <p class="text-muted">{{ testimonial.designation }}</p>
+                                    <p>{{ testimonial.comment }}</p>
+
+
+                                    <div class="d-flex justify-content-center mb-3">
+                                        <i class="bi bi-star-fill text-warning"></i>
+                                        <i class="bi bi-star-fill text-warning"></i>
+                                        <i class="bi bi-star-fill text-warning"></i>
+                                        <i class="bi bi-star-fill text-warning"></i>
+                                        <i class="bi bi-star-half text-warning"></i>
+                                    </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+            <div class="container mt-5">
+
+                <h4 class="fw-bold text-center text-dark mb-4 animate__animated animate__fadeInUp">
+                    ✨ Share Your Experience ✨
+                </h4>
+
+
+                <div class="row justify-content-center">
+                    <div class="col-12">
+                        <div class="card shadow-lg border-light rounded-3 p-4">
+                            <div class="card-body">
+                                <h5 class="card-title text-center mb-4">We Value Your Feedback</h5>
+
+
+                                <form method="POST" action="{{ url_for('add_testimonial', vcard_id=vcard.id) }}"
+                                    class="mb-3">
+
+                                    <div class="mb-3">
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="bi bi-person-circle"></i></span>
+                                            <input type="text" name="name" class="form-control" placeholder="Your Name"
+                                                required>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="mb-3">
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="bi bi-pencil"></i></span>
+                                            <textarea name="comment" class="form-control" placeholder="Your Comment"
+                                                required></textarea>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="text-center">
+                                        <button type="submit"
+                                            class="btn btn-primary btn-lg animate__animated animate__fadeInUp">
+                                            Submit Testimonial <i class="bi bi-arrow-right-circle"></i>
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {% if vcard.services %}
+            <div class="container mt-5">
+
+                <h3 class="h4 fw-bold section-title text-center mb-5 animate__animated animate__fadeInUp">
+                    🚀 Our Services
+                </h3>
+
+
+                <div class="row justify-content-center">
+                    {% for service in vcard.services|from_json %}
+                    <div class="mb-4">
+
+                        <div class="card card-hover shadow-lg border-0 h-100 animate__animated animate__fadeInUp">
+                            {% if service.image %}
+                            <img src="{{ service.image }}" class="card-img-top rounded-3" alt="Service Image"
+                                style="object-fit: cover; max-height: 250px;">
+                            {% endif %}
+
+                            <div class="card-body">
+
+                                <h5 class="card-title fw-bold mb-3">
+                                    <i class="bi bi-gear-fill text-primary"></i> {{ service.title }}
+                                </h5>
+
+                                <p class="card-text text-muted mb-4">
+                                    {{ service.description | truncate(100, true, '...') }}
+                                </p>
+
+
+                                <div class="text-center">
+                                    <button type="button"
+                                        class="btn btn-outline-primary btn-lg px-4 py-2 animate__animated animate__fadeInUp"
+                                        data-bs-toggle="modal" data-bs-target="#serviceModal{{ loop.index }}">
+                                        <i class="bi bi-arrow-right-circle"></i> Learn More
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="modal fade" id="serviceModal{{ loop.index }}" tabindex="-1"
+                        aria-labelledby="serviceModalLabel{{ loop.index }}" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="serviceModalLabel{{ loop.index }}">{{ service.title }}
+                                    </h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body text-center">
+
+                                    {% if service.image %}
+                                    <img src="{{ service.image }}" class="img-fluid rounded-3 mb-4" alt="Service Image"
+                                        style="max-width: 80%; max-height: 400px; object-fit: contain;">
+                                    {% endif %}
+                                    <p>{{ service.description }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+
+                <script
+                    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+            </div>
+
+            {% endif %}
+
+            <div class="container mt-5">
+
+                <div class="card card-hover border-0 shadow-lg animate__animated animate__fadeInUp">
+                    <div class="card-body">
+
+                        <h3 class="h4 fw-bold section-title text-center mb-5">
+                            📩 Contact Me
+                        </h3>
+
+
+                        <form method="POST" action="{{ url_for('send_inquiry', vcard_id=vcard.id) }}">
+                            <div class="row g-3">
+
+                                <div class="col-md-6">
+                                    <input type="text" name="name" class="form-control shadow-sm border-0 rounded-3"
+                                        placeholder="Your Name" required>
+                                </div>
+
+
+                                <div class="col-md-6">
+                                    <input type="email" name="email" class="form-control shadow-sm border-0 rounded-3"
+                                        placeholder="Your Email" required>
+                                </div>
+
+
+                                <div class="col-12">
+                                    <input type="tel" name="phone" class="form-control shadow-sm border-0 rounded-3"
+                                        placeholder="Phone Number" required>
+                                </div>
+
+
+                                <div class="col-12">
+                                    <textarea name="message" class="form-control shadow-sm border-0 rounded-3" rows="4"
+                                        placeholder="Your Message..." required></textarea>
+                                </div>
+
+
+                                <div class="col-12 text-center">
+                                    <button type="submit"
+                                        class="btn btn-primary w-100 rounded-3 shadow-lg d-flex align-items-center justify-content-center">
+                                        <i class="bi bi-send-fill me-2"></i> Send Message
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const elements = document.querySelectorAll('.animate__animated');
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.visibility = 'visible';
+                        entry.target.classList.add(entry.target.dataset.animation);
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            elements.forEach(element => {
+                element.style.visibility = 'hidden';
+                observer.observe(element);
+            });
+        });
+    </script>
+</body>
+
+</html>
