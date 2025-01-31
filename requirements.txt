@@ -1,3 +1,4 @@
+psycopg2
 Flask
 Flask-SQLAlchemy
 Flask-Login
@@ -10,3 +11,6 @@ SQLAlchemy
 qrcode
 WTForms
 gunicorn
+email_validator
+Pillow
+qrcode
