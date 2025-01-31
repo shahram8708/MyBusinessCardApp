@@ -340,7 +340,7 @@ def vcard_preview(company_name):
     formatted_name_for_url = formatted_name.replace(" ", "-")  
     
     
-    qr_data = f"http://127.0.0.1:5000/{formatted_name_for_url}"  
+    qr_data = f"https://mybusinesscardapp.onrender.com/{formatted_name_for_url}"  
     
     
     qr_code_image = qrcode.make(qr_data)
