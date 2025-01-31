@@ -11,3 +11,4 @@ SQLAlchemy
 qrcode
 WTForms
 gunicorn
+email_validator
